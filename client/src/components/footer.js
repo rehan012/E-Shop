@@ -50,7 +50,7 @@ export default function Footer() {
                         </div>
                     </div>
                     <div className="row text-center">
-                        <span>Built with ❤ by @rehan </span>
+                        <span>Built with ❤ by @rehankhan</span>
                     </div>
                 </div>
 
