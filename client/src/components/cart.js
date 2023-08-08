@@ -1,7 +1,7 @@
 
-export default function Cart({ items, order }) {
+export default function Cart({ items, order,changeQuantity }) {
 
-    let price = order.items.reduce((acc,item) => acc + item.price,0);
+    let price = order.items.reduce((acc,item) => acc + item.price * item.quantity,0);
 
 
     return (
@@ -20,10 +20,11 @@ export default function Cart({ items, order }) {
                                     <h5>{item.name}</h5>
                                     <h6>{item.category}</h6>
                                     <p>$ {item.price}</p>
+                                    <p>qty {item.quantity}</p>
                                 </div>
                                 <div className="col-2 p-2">
                                     Quantity
-                                    <select name="" id="">
+                                    <select name="" id="" onChange={(e) => changeQuantity(e.target.value,item)}>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>

@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import Cart from '../components/cart';
-import { CHANGE_ORDER_CART } from '../action';
+import { CHANGED_QUANTITY, CHANGE_ORDER_CART } from '../action';
 import { useEffect } from 'react';
 
 
@@ -19,17 +19,21 @@ function CartPage() {
 
     }, [cartItems])
 
+    const changeQuantity = (quantity, item) => {
+        dispatch({ type: CHANGED_QUANTITY, payload: { ...item, quantity: quantity } });
+    }
+
+   
 
 
+return (
+    <div>
+        <Navbar cartCount={cartItems.length} />
+        <Cart items={cartItems} order={order} changeQuantity={changeQuantity} />
+        <Footer />
 
-    return (
-        <div>
-            <Navbar cartCount={cartItems.length} />
-            <Cart items={cartItems} order={order} />
-            <Footer />
-
-        </div>
-    );
+    </div>
+);
 }
 
 export default CartPage;
