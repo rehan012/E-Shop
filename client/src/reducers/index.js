@@ -1,4 +1,4 @@
-import { ADD_TO_CART, CHANGE_ORDER_CART } from "../action";
+import { ADD_TO_CART, CHANGE_ORDER_CART, CHANGED_QUANTITY } from "../action";
 
 
 
@@ -80,9 +80,18 @@ const cartReducer = (state = initailStateCart, action) => {
         return state;
       }
       else {
-        return { ...state, items: [...state.items, action.payload] }
+        return { ...state, items: [...state.items, { ...action.payload, quantity: 1 }] }
 
       }
+
+    case CHANGED_QUANTITY :
+      const oldItem = (state.items.find(item => item.id === action.payload.id))
+      const index = state.items.indexOf(oldItem)
+      const newItems = [...state.items]
+      newItems[index] = action.payload
+      
+      return {...state, items : newItems}
+
 
     default: return state;
   }
@@ -90,9 +99,17 @@ const cartReducer = (state = initailStateCart, action) => {
 
 const orderReducer = (state = initailStateOrder, action) => {
   switch (action.type) {
-    case CHANGE_ORDER_CART:
-      return { ...state, items: action.payload }
-
+    case CHANGE_ORDER_CART:const items = action.payload;
+    const total_items = items.reduce(
+      (total, item) => total + item.quantity * 1,
+      0
+    );
+    const total_cost = items.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+    return { ...state, items: action.payload, total_items, total_cost };
+     
     default: return state;
   }
 }

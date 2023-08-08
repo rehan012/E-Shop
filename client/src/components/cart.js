@@ -1,9 +1,11 @@
-
-export default function Cart({ items, order }) {
-
-    let price = order.items.reduce((acc,item) => acc + item.price,0);
+import { Link } from "react-router-dom";
 
 
+
+
+export default function Cart({ items, order,changeQuantity }) {
+
+    
     return (
         <>
             <div className="container mb-5">
@@ -20,10 +22,11 @@ export default function Cart({ items, order }) {
                                     <h5>{item.name}</h5>
                                     <h6>{item.category}</h6>
                                     <p>$ {item.price}</p>
+                                    <p>qty {item.quantity}</p>
                                 </div>
                                 <div className="col-2 p-2">
                                     Quantity
-                                    <select name="" id="">
+                                    <select name="" id="" onChange={(e) => changeQuantity(e.target.value,item)}>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -49,8 +52,12 @@ export default function Cart({ items, order }) {
                             <button class="btn btn-primary">Apply</button>
                         </div>
                         <div class="d-flex flex-row justify-content-between p-2">
+                            <span class="billing-item">Total Quanity</span>
+                            <span class="billing-cost">{order.total_items}</span>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between p-2">
                             <span class="billing-item">Items</span>
-                            <span class="billing-cost">${price}</span>
+                            <span class="billing-cost">${order.total_cost}</span>
                         </div>
                         <div class="d-flex flex-row justify-content-between p-2">
                             <span class="billing-item">Shipping</span>
@@ -59,15 +66,15 @@ export default function Cart({ items, order }) {
                         </div>
                         <div class="d-flex flex-row justify-content-between p-2">
                             <span class="billing-item">Discount({order.discount_in_percent}%)</span>
-                            <span class="billing-cost">-${price*order.discount_in_percent/100}</span>
+                            <span class="billing-cost">-${order.total_cost*order.discount_in_percent/100}</span>
                         </div>
                         <div class="d-flex flex-row justify-content-between p-2">
                             <span class="billing-item fs-5">Total</span>
-                            <span class="billing-cost fs-5">${price-price*order.discount_in_percent/100+order.shipping_charges }</span>
+                            <span class="billing-cost fs-5">${order.total_cost-order.total_cost*order.discount_in_percent/100+order.shipping_charges }</span>
                         </div>
 
                         <div class="d-flex mt-3">
-                            <a href="/checkout.html" class="btn btn-primary flex-grow-1">Pay Now</a>
+                            <Link to="/checkout" class="btn btn-primary flex-grow-1">Pay Now</Link>
                         </div>
                     </div>
                 </div>
