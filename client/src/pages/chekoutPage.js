@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import Checkout from '../components/checkout';
-import { ADD_ADDRESS, SET_SHIP_ADDRESS, PLACE_ORDER } from '../action';
+import { ADD_ADDRESS, SET_SHIP_ADDRESS, PLACE_ORDER, EMPTY_CART } from '../action';
 
 
 
@@ -23,9 +23,12 @@ function CheckoutPage() {
         dispatch({type:SET_SHIP_ADDRESS, payload: address })
     }
 
-    const placeOrder = (address) => {
-        // dispatch({type:SET_SHIP_ADDRESS, payload: address })
-        console.log(address);
+    const placeOrder = () => {
+        if(order.shipping_address){
+        dispatch({type: PLACE_ORDER, payload: order })
+        dispatch({type: EMPTY_CART})
+       }
+       else alert("Select Shipping address")
     }
 
 

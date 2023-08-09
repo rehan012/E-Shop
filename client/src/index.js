@@ -4,6 +4,7 @@ import App from './App';
 import Home from './pages/home';
 import CartPage from './pages/cartPage';
 import CheckoutPage from './pages/chekoutPage';
+import OrdersPage from './pages/ordersPage';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { cartReducer, productReducer, orderReducer, userReducer } from './reducers';
@@ -12,6 +13,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+
 
 
 
@@ -41,6 +43,7 @@ root.render(
             <Route index element={<Home />} />
             <Route path="cart" element={<CartPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
+            <Route path="myorders" element={<OrdersPage />} />
           </Route>
         </Routes>
       </Router>
