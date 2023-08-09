@@ -48,6 +48,22 @@ const db ={
             },
             image:'product-3-square',
             images :['product-3-square','product-3-square','product-3-square']
+        },
+        {
+            id:4,
+            name :'Nikon Xl54',
+            price: 1200.75,
+            category: 'Camera',
+            rating:3,
+            color:'black',
+            size : '',
+            details : {
+                product :"",
+                warranty : "",
+                merchant:""
+            },
+            image:'product-4-square',
+            images :['product-4-square','product-4-square','product-4-square']
         }
     ]
 }

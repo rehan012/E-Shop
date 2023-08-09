@@ -5,4 +5,5 @@ export const ADD_ADDRESS = 'ADD_ADDRESS';
 export const SET_SHIP_ADDRESS = 'SET_SHIP_ADDRESS';
 export const PLACE_ORDER = 'PLACE_ORDER';
 export const EMPTY_CART = 'EMPTY_CART';
+export const REMOVE_ITEM = 'REMOVE_ITEM';
 

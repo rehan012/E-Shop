@@ -13,6 +13,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import ProductDetailsPage from './pages/productDetailsPage';
 
 
 
@@ -44,6 +45,7 @@ root.render(
             <Route path="cart" element={<CartPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
             <Route path="myorders" element={<OrdersPage />} />
+            <Route path="/product/:productId" element={<ProductDetailsPage />} />
           </Route>
         </Routes>
       </Router>
