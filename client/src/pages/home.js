@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Navbar from '../components/navbar';
 import Carousel from '../components/carousel';
 import Footer from '../components/footer';
-import { ADD_TO_CART } from '../action';
+import { addToCartAC } from '../action';
 
 function Home() {
     const dispatch = useDispatch();
@@ -11,7 +11,7 @@ function Home() {
     const cart = useSelector(state => state.cart.items);
 
     const addToCart = (product) => {
-        dispatch({ type: ADD_TO_CART, payload: product })
+        dispatch(addToCartAC(product))
 
     }
     return (

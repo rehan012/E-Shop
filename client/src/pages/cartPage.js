@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import Cart from '../components/cart';
-import { CHANGED_QUANTITY, CHANGE_ORDER_CART, REMOVE_ITEM } from '../action';
+import { changeOrderWithCart, changeQuantityAC, removeItemAC } from '../action';
 import { useEffect } from 'react';
 
 
@@ -15,16 +15,16 @@ function CartPage() {
 
     useEffect(() => {
 
-        dispatch({ type: CHANGE_ORDER_CART, payload: cartItems });
+        dispatch(changeOrderWithCart(cartItems));
 
     }, [cartItems])
 
     const changeQuantity = (quantity, item) => {
-        dispatch({ type: CHANGED_QUANTITY, payload: { ...item, quantity: quantity } });
+        dispatch(changeQuantityAC({...item,quantity: quantity}));
     }
 
     const removeItem = (item) => {
-    dispatch({ type: REMOVE_ITEM, payload: item });
+        dispatch(removeItemAC(item));
     }
 
    
