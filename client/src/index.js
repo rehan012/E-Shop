@@ -6,7 +6,7 @@ import CartPage from './pages/cartPage';
 import CheckoutPage from './pages/chekoutPage';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-import { cartReducer, productReducer, orderReducer } from './reducers';
+import { cartReducer, productReducer, orderReducer, userReducer } from './reducers';
 import {
   BrowserRouter as Router,
   Routes,
@@ -23,6 +23,7 @@ const store = configureStore(
       product: productReducer,
       cart: cartReducer,
       order : orderReducer,
+      user : userReducer,
 
     }
   }
