@@ -4,14 +4,17 @@ import App from './App';
 import Home from './pages/home';
 import CartPage from './pages/cartPage';
 import CheckoutPage from './pages/chekoutPage';
+import OrdersPage from './pages/ordersPage';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-import { cartReducer, productReducer, orderReducer } from './reducers';
+import { cartReducer, productReducer, orderReducer, userReducer } from './reducers';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
 } from "react-router-dom";
+import ProductDetailsPage from './pages/productDetailsPage';
+
 
 
 
@@ -23,6 +26,7 @@ const store = configureStore(
       product: productReducer,
       cart: cartReducer,
       order : orderReducer,
+      user : userReducer,
 
     }
   }
@@ -40,6 +44,8 @@ root.render(
             <Route index element={<Home />} />
             <Route path="cart" element={<CartPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
+            <Route path="myorders" element={<OrdersPage />} />
+            <Route path="/product/:productId" element={<ProductDetailsPage />} />
           </Route>
         </Routes>
       </Router>
