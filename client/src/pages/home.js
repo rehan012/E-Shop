@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Navbar from '../components/navbar';
 import Carousel from '../components/carousel';
 import Footer from '../components/footer';
-import { addToCartAC } from '../action';
+import { addToCartAC, initializeProductsAC } from '../action';
+import { useEffect } from 'react';
+
 
 function Home() {
     const dispatch = useDispatch();
@@ -14,6 +16,11 @@ function Home() {
         dispatch(addToCartAC(product))
 
     }
+
+    useEffect(()=>{
+        dispatch(initializeProductsAC())
+    },[])
+
     return (
         <div>
             <Navbar cartCount={cart.length} />
