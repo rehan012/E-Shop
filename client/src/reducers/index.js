@@ -1,4 +1,4 @@
-import { ADD_ADDRESS, ADD_TO_CART, CHANGE_ORDER_CART, CHANGED_QUANTITY, EMPTY_CART, INIT_PRODUCTS, PLACE_ORDER, REMOVE_ITEM, SET_SHIP_ADDRESS } from "../action";
+import { ADD_ADDRESS, CHANGE_ORDER_CART, CHANGED_ITEM_IN_CART, EMPTY_CART, INIT_CART, INIT_PRODUCTS, PLACE_ORDER, REMOVE_ITEM, SET_SHIP_ADDRESS } from "../action";
 
 
 
@@ -30,33 +30,29 @@ const initialStateUser = {
 
 
 const productReducer = (state = initailStateProduct, action) => {
-  switch(action.type){
-  
+  switch (action.type) {
+
     case INIT_PRODUCTS:
-      return { ...state, products: action.payload}
-  
-   default :
-  return state;
-}}
+      return { ...state, products: action.payload }
+
+    
+
+    default:
+      return state;
+  }
+}
 
 const cartReducer = (state = initailStateCart, action) => {
   switch (action.type) {
-    case ADD_TO_CART:
-      if (state.items.find(item => item.id === action.payload.id)) {
-        return state;
+
+    case INIT_CART:
+      return { ...state, items: action.payload.items }
+
+    case CHANGED_ITEM_IN_CART:
+      return {
+        ...state,
+        items: action.payload.items
       }
-      else {
-        return { ...state, items: [...state.items, { ...action.payload, quantity: 1 }] }
-
-      }
-
-    case CHANGED_QUANTITY:
-      const oldItem = (state.items.find(item => item.id === action.payload.id))
-      const index = state.items.indexOf(oldItem)
-      const newItems = [...state.items]
-      newItems[index] = action.payload
-
-      return { ...state, items: newItems }
 
     case EMPTY_CART:
 
@@ -64,7 +60,7 @@ const cartReducer = (state = initailStateCart, action) => {
 
     case REMOVE_ITEM:
       const item = action.payload;
-      const newIt = state.items.filter((it) => it.id !== item.id)
+      const newIt = state.items.filter((it) => it._id !== item._id)
 
       return { ...state, items: newIt }
 

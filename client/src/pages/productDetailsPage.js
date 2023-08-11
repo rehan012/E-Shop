@@ -12,7 +12,7 @@ const ProductDetailsPage = () => {
   let { productId } = useParams();
   const cartItems = useSelector(state => state.cart.items)
   const products = useSelector(state => state.product.products)
-  const product = products.find(p => p.id === (productId * 1))
+  const product = products.find(p => p._id === (productId * 1))
   //   console.log(productId,products,product);
 
   const addToCart = (product) => {

@@ -20,7 +20,7 @@ function CartPage() {
     }, [cartItems])
 
     const changeQuantity = (quantity, item) => {
-        dispatch(changeQuantityAC({...item,quantity: quantity}));
+        dispatch(changeQuantityAC({...item, quantity: quantity}));
     }
 
     const removeItem = (item) => {
