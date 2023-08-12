@@ -8,6 +8,8 @@ export const EMPTY_CART = 'EMPTY_CART';
 export const REMOVE_ITEM = 'REMOVE_ITEM';
 export const INIT_PRODUCTS = 'INIT_PRODUCTS';
 export const INIT_CART = 'INIT_CART';
+export const INIT_USER = 'INIT_USER';
+
 
 
 export const initializeProductsAC = () => {  //AC = Action Creator
@@ -21,14 +23,28 @@ export const initializeProductsAC = () => {  //AC = Action Creator
 
 }
 
-export const initializeCartAC = ()=>{  
-    return function(dispatch){
+export const initializeCartAC = (userId) => {
+    return function (dispatch) {
         axios.get('http://localhost:8080/cart').then(function (response) {
-            dispatch({type:INIT_CART, payload: response.data})
-          })
-          .catch(function (error) {
-            console.log(error);
-          })  
+            console.log(response.data);
+            dispatch({ type: INIT_CART, payload: { items: response.data.items, userId: userId } })
+        })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
+}
+
+export const initializeUserAC = () => {
+    return function (dispatch) {
+        axios.get('http://localhost:8080/user').then(function (response) {
+            console.log("Error is ", response.data)
+            dispatch({ type: INIT_USER, payload: response.data })
+            dispatch(initializeCartAC(response.data._id))
+        })
+            .catch(function (error) {
+                console.log(error);
+            })
     }
 }
 
@@ -63,10 +79,14 @@ export const changeOrderWithCart = (cartItems) => {
 
 export const addAddressAC = (address) => {  //AC = Action Creator
     return function (dispatch) {
-
-        dispatch({ type: ADD_ADDRESS, payload: address })
+        axios.post('http://localhost:8080/updateUserAddress', { address: address }).then(function (response) {
+            console.log(response);
+            dispatch({ type: ADD_ADDRESS, payload: response.data })
+        })
+            .catch(function (error) {
+                console.log(error);
+            })
     }
-
 }
 
 export const setShipAddressAC = (address) => {  //AC = Action Creator
@@ -74,37 +94,41 @@ export const setShipAddressAC = (address) => {  //AC = Action Creator
         dispatch({ type: SET_SHIP_ADDRESS, payload: address })
     }
 }
+
 export const placeOrderAC = (order) => {  //AC = Action Creator
     return function (dispatch) {
-        
-        dispatch({ type: PLACE_ORDER, payload: order })
-
-
-
+        axios.post('http://localhost:8080/order', { order: order }).then(function (response) {
+            console.log(response);
+            dispatch({ type: PLACE_ORDER, payload: response.data })
+        })
+            .catch(function (error) {
+                console.log(error);
+            })
     }
 }
-export const emptyCartAC = ()=>{  //AC = Action Creator
-    return function(dispatch){
+
+export const emptyCartAC = () => {  //AC = Action Creator
+    return function (dispatch) {
         axios.post('http://localhost:8080/emptyCart').then(function (response) {
             console.log(response);
-            dispatch({type:CHANGED_ITEM_IN_CART, payload: response.data})
-          })
-          .catch(function (error) {
-            console.log(error);
-          })  
-           // dispatch({type:EMPTY_CART,})
+            dispatch({ type: CHANGED_ITEM_IN_CART, payload: response.data })
+        })
+            .catch(function (error) {
+                console.log(error);
+            })
+        // dispatch({type:EMPTY_CART,})
     }
 }
-export const removeItemAC = (item)=>{  //AC = Action Creator
-    return function(dispatch){
-        axios.post('http://localhost:8080/removeItem',{item:item}).then(function (response) {
+export const removeItemAC = (item) => {  //AC = Action Creator
+    return function (dispatch) {
+        axios.post('http://localhost:8080/removeItem', { item: item }).then(function (response) {
             console.log(response);
-            dispatch({type:CHANGED_ITEM_IN_CART, payload: response.data})
-          })
-          .catch(function (error) {
-            console.log(error);
-          })  
+            dispatch({ type: CHANGED_ITEM_IN_CART, payload: response.data })
+        })
+            .catch(function (error) {
+                console.log(error);
+            })
 
-           // dispatch({type:REMOVE_ITEM,payload:item})
+        // dispatch({type:REMOVE_ITEM,payload:item})
     }
 }

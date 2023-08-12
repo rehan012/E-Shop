@@ -5,7 +5,7 @@ const Orders = ({ items, order }) => {
       <div className="d-flex flex-row align-items-start">
         
         <div className="col-11 d-flex flex-column m-2">
-        {/* Order Number : {order._id} | Date of Order : {format(new Date(order.createdAt), 'dd MMM yyyy')} */}
+        Order Number : {order._id} 
           {items.map((item) => (
             <div className="cart-item p-3">
               <div className="d-flex flex-row">
