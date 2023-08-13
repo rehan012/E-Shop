@@ -9,20 +9,20 @@ export default function Footer() {
                         <div className="col-lg-4">
                             <h5>Categories</h5>
                             <ul>
-                                <li>{/*<a href="#">Watches</a>*/}</li>
-                                <li>{/*<a href="#">Mobiles</a>*/}</li>
-                                <li>{/*<a href="#">Tablets</a>*/}</li>
-                                <li>{/*<a href="#">Audio</a>*/}</li>
-                                <li>{/*<a href="#">Drones</a>*/}</li>
+                                <li>{/*<a href="#">Watches</a>*/}Watches</li>
+                                <li>{/*<a href="#">Mobiles</a>*/}Mobiles</li>
+                                <li>{/*<a href="#">Tablets</a>*/}Tablets</li>
+                                <li>{/*<a href="#">Audio</a>*/}Audio</li>
+                                <li>{/*<a href="#">Drones</a>*/}Drones</li>
                             </ul>
                         </div>
                         <div className="col-lg-4">
                             <h5>Useful Links</h5>
                             <ul>
-                                <li>{/*<a href="#">Terms</a>*/}</li>
-                                <li>{/*<a href="#">Privacy</a>*/}</li>
-                                <li>{/*<a href="#">About us</a>*/}</li>
-                                <li>{/*<a href="#">Mission</a>*/}</li>
+                                <li>{/*<a href="#">Terms</a>*/}Terms</li>
+                                <li>{/*<a href="#">Privacy</a>*/}Privacy</li>
+                                <li>{/*<a href="#">About us</a>*/}About</li>
+                                <li>{/*<a href="#">Mission</a>*/}Mission</li>
                             </ul>
                         </div>
                         <div className="col-lg-4">

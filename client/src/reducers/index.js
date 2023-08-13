@@ -22,12 +22,7 @@ const initailStateOrder = {
 }
 
 const initialStateUser = {
-  name: 'John',
-  email: 'john@example.com',
-  addresses: [
-  ],
-  orders: [],
-};
+}
 
 
 const productReducer = (state = initailStateProduct, action) => {
@@ -35,8 +30,6 @@ const productReducer = (state = initailStateProduct, action) => {
 
     case INIT_PRODUCTS:
       return { ...state, products: action.payload }
-
-
 
     default:
       return state;
