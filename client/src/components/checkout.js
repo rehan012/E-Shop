@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 const Checkout = ({ order, user, addAddress, setShipAddress, placeOrder }) => {
     const blank_address = { first_name: '', last_name: '', phone: '', address1: '', address2: '', country: '', state: '', pin_code: '' }
     const [address, setAddress] = useState(blank_address);
@@ -66,7 +67,7 @@ const Checkout = ({ order, user, addAddress, setShipAddress, placeOrder }) => {
                         <h4 class="mb-3">Shipping address</h4>
 
                         {user.addresses.map(address =>
-                            <div class="card">
+                            <div  class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">{address.first_name} {address.last_name}</h5>
                                     <h6 class="card-subtitle mb-2 text-muted ">{address.address1}, {address.address2}, {address.state},{address.country}, {address.pin_code}</h6>

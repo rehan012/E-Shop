@@ -3,12 +3,13 @@ import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import Checkout from '../components/checkout';
 import { addAddressAC, setShipAddressAC, placeOrderAC, emptyCartAC } from '../action';
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 function CheckoutPage() {
-
+    
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const cartItems = useSelector(state => state.cart.items);
     const order = useSelector(state => state.order);
@@ -25,7 +26,7 @@ function CheckoutPage() {
 
     const placeOrder = () => {
         if (order.shipping_address) {
-            dispatch(placeOrderAC(order))
+            dispatch(placeOrderAC(order,navigate))
 
             dispatch(emptyCartAC())
 
@@ -35,12 +36,12 @@ function CheckoutPage() {
 
 
     return (
-        <div>
+        <>
             <Navbar cartCount={cartItems.length} />
             <Checkout order={order} user={user} addAddress={addAddress} setShipAddress={setShipAddress} placeOrder={placeOrder} />
             <Footer />
 
-        </div>
+        </>
     );
 }
 

@@ -9,7 +9,7 @@ const Cart = ({items, order, changeQuantity, removeItem})=>{
      
         <div className="col-8 d-flex flex-column m-2">
         <h2>Cart : {!items.length?'No Items in Cart': null}</h2>
-          {items.map(item=><div className="cart-item p-3">
+          {items.map(item=><div  key={item._id} className="cart-item p-3">
             <div className="d-flex flex-row">
               <img
                 className="col-2 img-fluid"

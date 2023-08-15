@@ -5,22 +5,37 @@ const PORT = 8080;
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 require('dotenv').config()
+const session = require('express-session')
 
 
-
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET','POST'],
+  credentials: true
+}))
 
 app.use(express.json())
-app.use(cors())
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
+
+
+
+
 
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI);
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    //console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(error.message);
   }
 }
-connectDB()
+connectDB().catch(err => console.log(err));
 
 const productSchema = new Schema({
   name: { type: String, required: true },
@@ -108,30 +123,79 @@ const Order = new mongoose.model('Order', orderSchema);
 
 // })
 
+app.post('/login',(req,res)=>{
+  //console.log(req.body.user);
+  User.findOne({username: req.body.user.username, password:req.body.user.password}).populate('orders').then(result=>{
+      if(result){
+          req.session.user = result;
+          res.send({status:true, user:result});
+      } else{
+          res.status(404).send({status:false});
+      }
+      
+  })
+})
+
+app.get('/logout',(req,res)=>{
+ req.session.user = null;
+ res.send({status: true})
+})
+
+app.post('/signup',(req,res)=>{
 
 
-app.get('/', (req, res) => {
+  let user = new User({...req.body.user, email: req.body.user.username, orders:[]})
+ 
+  User.findOne({username:req.body.user.username}).then(result=>{
+      if(result){
+          res.status(404).send({status:false});
+      } else {
+          user.save().then(usr=>{
+              req.session.user = usr;
+              res.send({status:true, user:usr});
+          })
+      }
+  });
+
+
+})
+
+app.get('/user',(req,res)=>{
+if(req.session.user){
+  User.findOne({username: req.session.user.username}).populate('orders').then(result=>{
+          req.session.user = result;
+          res.send({status:true, user:result});
+  })
+} else {
+  res.send({status:false});
+}
+});
+// you will need to call this for order updates. Not the best solution. you can make and Order GET API also.
+
+
+
+app.get('/product', (req, res) => {
   Product.find({}).then((result) => {
     res.send(result)
   })
 })
 
 app.get('/cart', (req, res) => {
-  let userId = "64d75054609d6adba97ba0ce";
+  let userId = req.session.user._id;
   Cart.findOne({ userId: userId }).then((result) => {
     if (result) {
       res.send(result)
     }
     else {
-      res.send({ userId: "64d75054609d6adba97ba0ce", items: [] })
+      res.send({ userId: req.session.user._id, items: [] })
     }
   })
 })
 
 app.post('/cart', (req, res) => {
 
-  // const userId = req.session.user._id;  // This will be solved by Sessions
-  const userId = "64d75054609d6adba97ba0ce";
+   // This will be solved by Sessions
+  const userId = req.session.user._id;
   const item = req.body.item;
   if (!item.quantity) {
     item.quantity = 1;
@@ -163,7 +227,7 @@ app.post('/cart', (req, res) => {
 app.post('/removeItem', (req, res) => {
 
   // const userId = req.session.user._id;
-  const userId = "64d75054609d6adba97ba0ce";
+  const userId = req.session.user._id;
   const item = req.body.item;
   Cart.findOne({ userId: userId }).then(result => {
 
@@ -178,7 +242,7 @@ app.post('/removeItem', (req, res) => {
 
 app.post('/emptyCart', (req, res) => {
   // const userId = req.session.user._id;
-  const userId = "64d75054609d6adba97ba0ce";
+  const userId = req.session.user._id;
   Cart.findOne({ userId: userId }).then(result => {
     result.items = [];
     result.save().then(cart => {
@@ -188,15 +252,15 @@ app.post('/emptyCart', (req, res) => {
 
 });
 
-app.get('/user', (req, res) => {
-  User.findOne({}).populate('orders').then(result => {
-    res.send(result);
-  })
+// app.get('/user', (req, res) => {
+//   User.findOne({}).populate('orders').then(result => {
+//     res.send(result);
+//   })
 
-});
+// });
 
 app.post('/updateUserAddress', (req, res) => {
-  const userId = "64d75054609d6adba97ba0ce"
+  const userId = req.session.user._id
   const address = req.body.address;
   User.findOne({ _id: userId }).then((user) => {
     user.addresses.push(address);
@@ -204,12 +268,12 @@ app.post('/updateUserAddress', (req, res) => {
       res.send(address);
     })
   }).catch((err) => {
-    console.log("UpdateAddressError", err);
+    //console.log("UpdateAddressError", err);
   })
 })
 
 app.post('/order', (req, res) => {
-  const userId = "64d75054609d6adba97ba0ce"
+  const userId = req.session.user._id
   const order = req.body.order;
 
   let newOrder = new Order(order);
@@ -226,7 +290,7 @@ app.post('/order', (req, res) => {
 
 
 app.listen(PORT, () => {
-  console.log(`Connected to Port ${PORT}`);
+  //console.log(`Connected to Port ${PORT}`);
 })
 
 

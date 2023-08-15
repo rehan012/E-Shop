@@ -1,4 +1,6 @@
 import axios from 'axios';
+axios.defaults.withCredentials = true;
+
 export const CHANGED_ITEM_IN_CART = 'CHANGED_ITEM_IN_CART';
 export const CHANGE_ORDER_CART = 'CHANGE_ORDER_CART';
 export const ADD_ADDRESS = 'ADD_ADDRESS';
@@ -10,11 +12,81 @@ export const INIT_PRODUCTS = 'INIT_PRODUCTS';
 export const INIT_CART = 'INIT_CART';
 export const INIT_USER = 'INIT_USER';
 
+export const loginAC = (user,navigate)=>{
+  return function(dispatch){
+    axios.post('http://localhost:8080/login',{user}).then(function (response) {
+        if(response.data.status){
+          dispatch({type:INIT_USER, payload: response.data.user})
+          dispatch(initializeCartAC(response.data.user._id));
+          navigate('/');
+        };
+       
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+        alert('Incorrect Credentials');
+      })  
+}
+}
 
+export const checkAuthAC = (navigate)=>{
+  return function(dispatch){
+    axios.get('http://localhost:8080/user').then(function (response) {
+      //console.log('auth',response.data);
+        if(response.data.status){
+          dispatch({type:INIT_USER, payload: response.data.user})
+          dispatch(initializeCartAC(response.data.user._id));
+          navigate('/');
+        } else {
+          navigate('/login');
+        }
+       
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+        navigate('/login');
+      })  
+}
+}
+
+export const signupAC = (user,navigate)=>{
+  return function(dispatch){
+    axios.post('http://localhost:8080/signup',{user}).then(function (response) {
+      if(response.data.status){
+        dispatch({type:INIT_USER, payload: response.data.user})
+        dispatch(initializeCartAC(response.data.user._id));
+        navigate('/');
+
+      };
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+        alert('Username already exist');
+
+      })  
+}
+}
+
+
+export const logoutAC = (navigate)=>{
+  return function(dispatch){
+    axios.get('http://localhost:8080/logout').then(function (response) {
+     //console.log('logoutAC');   
+    if(response.data.status){
+          dispatch({type:INIT_USER, payload: {}})
+          navigate('/login');
+        };
+       
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+      })  
+}
+}
 
 export const initializeProductsAC = () => {  //AC = Action Creator
     return function (dispatch) {
-        axios.get("http://localhost:8080/").then(function (response) {
+        axios.get("http://localhost:8080/product").then(function (response) {
             dispatch({ type: INIT_PRODUCTS, payload: response.data })
         }).catch(function (error) {
             console.log(error);
@@ -26,7 +98,7 @@ export const initializeProductsAC = () => {  //AC = Action Creator
 export const initializeCartAC = (userId) => {
     return function (dispatch) {
         axios.get('http://localhost:8080/cart').then(function (response) {
-            console.log(response.data);
+            //console.log(response.data);
             dispatch({ type: INIT_CART, payload: { items: response.data.items, userId: userId } })
         })
             .catch(function (error) {
@@ -35,18 +107,18 @@ export const initializeCartAC = (userId) => {
     }
 }
 
-export const initializeUserAC = () => {
-    return function (dispatch) {
-        axios.get('http://localhost:8080/user').then(function (response) {
-            console.log("Error is ", response.data)
-            dispatch({ type: INIT_USER, payload: response.data })
-            dispatch(initializeCartAC(response.data._id))
-        })
-            .catch(function (error) {
-                console.log(error);
-            })
-    }
-}
+// export const initializeUserAC = () => {
+//     return function (dispatch) {
+//         axios.get('http://localhost:8080/user').then(function (response) {
+//             //console.log("Error is ", response.data)
+//             dispatch({ type: INIT_USER, payload: response.data })
+//             dispatch(initializeCartAC(response.data._id))
+//         })
+//             .catch(function (error) {
+//                 console.log(error);
+//             })
+//     }
+// }
 
 export const addToCartAC = (item) => {  //AC = Action Creator
     return function (dispatch) {
@@ -80,7 +152,7 @@ export const changeOrderWithCart = (cartItems) => {
 export const addAddressAC = (address) => {  //AC = Action Creator
     return function (dispatch) {
         axios.post('http://localhost:8080/updateUserAddress', { address: address }).then(function (response) {
-            console.log(response);
+            //console.log(response);
             dispatch({ type: ADD_ADDRESS, payload: response.data })
         })
             .catch(function (error) {
@@ -95,12 +167,13 @@ export const setShipAddressAC = (address) => {  //AC = Action Creator
     }
 }
 
-export const placeOrderAC = (order) => {  //AC = Action Creator
+export const placeOrderAC = (order,navigate) => {  //AC = Action Creator
     return function (dispatch) {
         axios.post('http://localhost:8080/order', { order: order }).then(function (response) {
-            console.log(response);
+            //console.log(response);
             dispatch({ type: PLACE_ORDER, payload: response.data })
-        })
+            navigate('/ordersuccess/'+response.data._id);
+          })
             .catch(function (error) {
                 console.log(error);
             })
@@ -110,7 +183,7 @@ export const placeOrderAC = (order) => {  //AC = Action Creator
 export const emptyCartAC = () => {  //AC = Action Creator
     return function (dispatch) {
         axios.post('http://localhost:8080/emptyCart').then(function (response) {
-            console.log(response);
+            //console.log(response);
             dispatch({ type: CHANGED_ITEM_IN_CART, payload: response.data })
         })
             .catch(function (error) {
@@ -122,7 +195,7 @@ export const emptyCartAC = () => {  //AC = Action Creator
 export const removeItemAC = (item) => {  //AC = Action Creator
     return function (dispatch) {
         axios.post('http://localhost:8080/removeItem', { item: item }).then(function (response) {
-            console.log(response);
+            //console.log(response);
             dispatch({ type: CHANGED_ITEM_IN_CART, payload: response.data })
         })
             .catch(function (error) {

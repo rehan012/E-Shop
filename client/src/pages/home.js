@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Navbar from '../components/navbar';
 import Carousel from '../components/carousel';
 import Footer from '../components/footer';
-import { addToCartAC, initializeProductsAC,initializeUserAC } from '../action';
+import { addToCartAC, initializeProductsAC } from '../action';
 import { useEffect } from 'react';
 
 
@@ -18,19 +18,18 @@ function Home() {
     }
 
     useEffect(()=>{
-        dispatch(initializeUserAC())
         dispatch(initializeProductsAC())
         
     },[])
 
     return (
-        <div>
+        <>
             <Navbar cartCount={cart.length} />
             <Carousel />
             <ProductList products={products} addToCart={addToCart} />
             <Footer />
 
-        </div>
+        </>
     );
 }
 

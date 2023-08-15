@@ -1,11 +1,14 @@
-import { Link } from "react-router-dom"
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { logoutAC } from "../action";
+const Nav = ({ cartCount }) => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-
-export default function Navbar({ cartCount }) {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
-                <Link to="/" className="navbar-brand" >MegaMarket</Link>
+                <Link className="navbar-brand" to="/">MegaMarket</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -13,32 +16,27 @@ export default function Navbar({ cartCount }) {
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
 
                         <li className="nav-item dropdown">
-                            {/* <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span className="nav-link" aria-expanded="false">
                                 Categories
-                            </a> */}
-                            <ul className="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
-                                <li><a className="dropdown-item" href="/#products">Cameras</a></li>
-                                <li><a className="dropdown-item" href="/#products">Apple Gadgets</a></li>
-                                <li><hr className="dropdown-divider" /></li>
-                                <li><a className="dropdown-item" href="/#products">Drones</a></li>
-                            </ul>
+                            </span>
+                            
                         </li>
                         <li className="nav-item">
-                            <Link to="/cart" className="nav-link" tabindex="-1">
+                            <Link className="nav-link" to="/cart">
                                 Cart<i className="bi bi-cart-plus-fill"></i>
                                 <span className="cart-badge badge bg-success">{cartCount}</span></Link>
                         </li>
                     </ul>
                     <ul className="navbar-nav mb-2 mb-lg-0 mx-lg-2 order-sm-last">
                         <li className="nav-item dropdown">
-                            <span className="nav-link dropdown-toggle" id="myaccount" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a className="nav-link dropdown-toggle" href="#" id="myaccount" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 My Account
-                            </span>
+                            </a>
                             <ul className="dropdown-menu bg-dark text-light" aria-labelledby="navbarDropdown">
                                 <li><Link className="dropdown-item" to="/myorders" >My Orders</Link></li>
-                                <li><a className="dropdown-item" href="/#" data-bs-toggle="modal" data-bs-target="#exampleModal">Profile</a></li>
+                                {/* <li><a className="dropdown-item" href="/#" data-bs-toggle="modal" data-bs-target="#exampleModal">Profile</a></li> */}
                                 <li><hr className="dropdown-divider" /></li>
-                                {/* <li onClick={(e) => { dispatch(logoutAC(navigate)) }}><a className="dropdown-item" >Logout</a></li> */}
+                                <li onClick={(e) => { dispatch(logoutAC(navigate)) }}><a className="dropdown-item" >Logout</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -54,3 +52,5 @@ export default function Navbar({ cartCount }) {
         </nav>
     )
 }
+
+export default Nav;
