@@ -9,7 +9,7 @@ const session = require('express-session')
 
 
 app.use(cors({
-  origin: 'https://mega-market-nine.vercel.app/',
+  origin: 'http://localhost:3000',
   methods: ['GET','POST'],
   credentials: true
 }))
@@ -20,7 +20,7 @@ app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true }
+  cookie: { secure: false }
 }));
 
 
