@@ -9,7 +9,7 @@ const session = require('express-session')
 
 
 app.use(cors({
-  origin: 'https://mega-market-nine.vercel.app',
+  origin: 'https://mega-market-nine.vercel.app/',
   methods: ['GET','POST'],
   credentials: true
 }))
